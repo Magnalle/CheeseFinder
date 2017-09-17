@@ -2,8 +2,8 @@ package com.myd.cheesefinder.dagger;
 
 import android.app.Application;
 
-import com.myd.cheesefinder.activities.CheesePresenter;
 import com.myd.cheesefinder.CheeseFinderApplication;
+import com.myd.cheesefinder.activities.CheesePresenterImpl;
 
 import javax.inject.Singleton;
 
@@ -28,5 +28,5 @@ public interface AppComponent {
 
     void inject(CheeseFinderApplication app);
 
-    void inject(CheesePresenter target);
+    void inject(CheesePresenterImpl target);
 }

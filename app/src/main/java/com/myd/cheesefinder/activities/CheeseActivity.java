@@ -58,6 +58,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CheeseActivity extends AppCompatActivity {
 
+    public final static int DEBOUNCE_TIME_MS = 1000;
+
     @Inject
     protected CheesePresenter mCheesePresenter;
     protected EditText mQueryEditText;
@@ -74,13 +76,13 @@ public class CheeseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheeses);
 
-        RecyclerView list = (RecyclerView) findViewById(R.id.list);
+        RecyclerView list = findViewById(R.id.list);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(mAdapter);
 
-        mQueryEditText = (EditText) findViewById(R.id.query_edit_text);
-        mSearchButton = (Button) findViewById(R.id.search_button);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mQueryEditText = findViewById(R.id.query_edit_text);
+        mSearchButton = findViewById(R.id.search_button);
+        mProgressBar = findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -119,7 +121,7 @@ public class CheeseActivity extends AppCompatActivity {
                         return s.length() >= 2;
                     }
                 })
-                .debounce(1000, TimeUnit.MILLISECONDS)
+                .debounce(DEBOUNCE_TIME_MS, TimeUnit.MILLISECONDS)
                 .skipWhile(new Predicate<String>() {
                     @Override
                     public boolean test(String s) throws Exception {

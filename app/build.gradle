@@ -2,15 +2,31 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
-        applicationId "com.raywenderlich.cheesefinder"
+        applicationId "com.myd.cheesefinder"
         minSdkVersion 16
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
+        resolutionStrategy.force 'com.android.support:support-annotations:26.0.1'
+    }
+
+    allprojects {
+        repositories {
+            jcenter()
+            maven {
+                url "https://maven.google.com"
+            }
+        }
     }
     buildTypes {
         release {
@@ -22,9 +38,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.0.1'
+    compile 'com.android.support:recyclerview-v7:26.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
@@ -33,4 +48,14 @@ dependencies {
     compile "com.google.dagger:dagger:2.11-rc2"
     compile 'com.google.dagger:dagger-android-support:2.11-rc2'
     provided 'javax.annotation:jsr250-api:1.0'
+
+    //Test
+
+    testCompile 'junit:junit:4.12'
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:3.0.1', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
 }
