@@ -1,10 +1,10 @@
 # CheeseFinder
 With applying MVP pattern to simple android application,  
-RxAndroid and Dagger 2 are together implemented.
+RxJava/RxAndroid and Dagger 2 are together implemented.
 
 Application simply lists the predefined cheeses as saved as string array in the resource file.
 
-App has one single activity which includes search box, search button and the list of cheeses as shown below.
+Application has one single activity which includes search box, search button and the list of cheeses as shown below.
 
 ![cheeseactivity](https://user-images.githubusercontent.com/10610988/31466156-db516100-aede-11e7-859e-f5d120231c0e.jpeg)
 
