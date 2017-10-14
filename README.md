@@ -14,6 +14,7 @@ In CheeseActivity two observables are created one for search button click and on
 
 ### Search Button's observale code:
 
+It observes the seach button click and send to emitter the search text at that time.
 
 ```
 private Observable<String> createButtonClickObservable() {
@@ -38,6 +39,8 @@ private Observable<String> createButtonClickObservable() {
 ```
 
 ### Search Box's observable code:
+
+It observes the seach text instant changes and send to emitter the search text at that time.
 
 ```
 private Observable<String> createTextChangeObservable() {
@@ -75,4 +78,70 @@ private Observable<String> createTextChangeObservable() {
     }
 ```
 
-# to be continue...
+### Using of observables
+
+#### Method onserveOn()
+
+Decides to android threads. Doing view based work we have to choose main thread with using below code:
+
+```
+.observeOn(AndroidSchedulers.mainThread())
+```
+But for searching the text from cheese list to find matched cheeses we may use asysnc thread with using below code:
+
+```
+.observeOn(Schedulers.io())
+```
+
+#### Method map()
+
+- Returns an Observable that applies a specified function to each item emitted by the source ObservableSource and emits the results of these function applications. 
+
+We are using the "map()" method here to search the matched cheeses.
+
+```
+.map(new Function<String, List<String>>() {
+        @Override
+        public List<String> apply(String s) throws Exception {
+                return mCheesePresenter.search(s);
+        }
+})
+```
+
+#### Method filter()
+- Filters items emitted by an ObservableSource by only emitting those that satisfy a specified predicate.
+
+We are using the "filter()" method here to limit the minimun text length is needed to do search while typing in to search box.
+
+```
+.filter(new Predicate<String>() {
+        @Override
+        public boolean test(String s) throws Exception {
+                return s.length() >= 2;
+        }
+})
+```
+
+#### Method Debounce()
+
+- Returns an Observable that mirrors the source ObservableSource, except that it drops items emitted by the source ObservableSource that are followed by newer items before a timeout value expires. The timer resets on each emission.
+
+We are using the "debounce()" method here to postphone the seacrhing after for each character typing because waiting the users' full search text will be more efective.
+
+```
+.debounce(DEBOUNCE_TIME_MS, TimeUnit.MILLISECONDS)
+```
+
+#### Method skipWhile()
+
+- Returns an Observable that skips all items emitted by the source ObservableSource as long as a specified condition holds true, but emits all further source items as soon as the condition becomes false.
+
+We are using the "skipWhile()" method to skip previous search if the search text has change while waiting the user to stop typing. As you see below:
+
+```
+.skipWhile(new Predicate<String>() {
+    @Override
+    public boolean test(String s) throws Exception {
+        return !mQueryEditText.getText().toString().equals(s);
+    }
+})
